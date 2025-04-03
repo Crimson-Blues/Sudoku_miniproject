@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board extends BoardAdapter{
-    private List<List<Integer>> board;
+    private List<List<Cell>> board;
 
 
     public Board(){
@@ -20,17 +20,17 @@ public class Board extends BoardAdapter{
 
     @Override
     public boolean isCellValid(int cellRow, int cellCol){
-        int cell = board.get(cellRow).get(cellCol);
+        int cell = board.get(cellRow).get(cellCol).getValue();
         //Check Column and Row validity first
         //Row:
         for(int i = 0; i < 6; i++){
-            if(cell == board.get(i).get(cellCol)){
+            if(cell == board.get(i).get(cellCol).getValue()){
                 return false;
             }
         }
         //Column:
         for(int i = 0; i < 6; i++){
-            if(cell == board.get(cellRow).get(i)){
+            if(cell == board.get(cellRow).get(i).getValue()){
                 return false;
             }
         }
