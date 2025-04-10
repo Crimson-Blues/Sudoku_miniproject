@@ -1,7 +1,4 @@
-package Model;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.example.miniproyecto2.Model;
 
 public class Block extends BoardAdapter{
 
@@ -10,12 +7,12 @@ public class Block extends BoardAdapter{
     }
 
     @Override
-    public boolean isCellValid(int cellRow, int cellCol){
-        boolean valid = true;
-        if(board.get(cellRow).get(cellCol).isEmpty()){
+    public boolean isCellValid(int cellCol, int cellRow){
+
+        if(board.get(cellCol).get(cellRow).isEmpty()){
             return true;
         }
-        int checkedCell = board.get(cellRow).get(cellRow).getValue();
+        int checkedCell = board.get(cellCol).get(cellRow).getValue();
 
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
@@ -28,8 +25,7 @@ public class Block extends BoardAdapter{
         return true;
     }
 
-    public boolean isValueValid(int cellRow, int cellCol, int value){
-        boolean valid = true;
+    public boolean isValueValid(int cellCol, int cellRow, int value){
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
                 if (board.get(i).get(j).getValue() == value){
