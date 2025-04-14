@@ -1,4 +1,4 @@
-package Model;
+package org.example.miniproyecto2.Model;
 
 import java.util.InputMismatchException;
 
@@ -25,8 +25,10 @@ public class Cell{
     }
 
     public int getValue(){
-        return value;
+        return value != null ? value : 0;
+        //return value;
     }
+
 
     public void setValue(int value){
         try{
@@ -49,4 +51,9 @@ public class Cell{
     public boolean isValueValid(Integer value){
         return value <= 6 && value >= 1;
     }
+
+    public void clearValue() {
+        this.value = null;
+    }
+
 }

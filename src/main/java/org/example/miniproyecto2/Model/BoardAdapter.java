@@ -1,4 +1,4 @@
-package Model;
+package org.example.miniproyecto2.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +12,16 @@ public abstract class BoardAdapter implements IBoard{
         this.width = width;
         this.height = height;
         board = new ArrayList<>();
-        for(int i = 0; i < width; i++){
+        for(int i = 0; i < width; i++) {
             board.add(new ArrayList<>());
-        }
-        for(int i = 0; i < height; i++){
-            board.get(i).add(new Cell());
+            for (int j = 0; j < height; j++) {
+                board.get(i).add(new Cell());
+            }
         }
 
     }
     @Override
-    public boolean isCellValid(int cellRow, int cellCol) {
+    public boolean isCellValid(int cellCol, int celLRow) {
         return false;
     }
 
@@ -31,12 +31,12 @@ public abstract class BoardAdapter implements IBoard{
     }
 
     @Override
-    public void setCell(int cellRow, int cellCol, int value) {
-        board.get(cellRow).get(cellCol).setValue(value);
+    public void setCell(int cellCol, int cellRow, Cell cell) {
+        board.get(cellCol).set(cellRow, cell);
     }
     @Override
-    public int getCell(int cellRow, int cellCol) {
-        return board.get(cellRow).get(cellCol).getValue();
+    public Cell getCell(int cellCol, int cellRow) {
+        return board.get(cellCol).get(cellRow);
     }
 
     @Override
