@@ -5,12 +5,14 @@ import java.util.*;
 public class Board extends BoardAdapter{
     List<List<Block>>  blocks;
     List<Cell> emptyCells;
+    List<Cell> initialCells;
 
 
     public Board(int width, int height){
         super(width, height);
         //Array for the remaining empty cells
         emptyCells = new  ArrayList<>();
+        initialCells = new  ArrayList<>();
 
         blocks = new ArrayList<>();
         for(int i = 0; i < 2; i++){
@@ -53,6 +55,7 @@ public class Board extends BoardAdapter{
                     } while(!isValueValid(rndCol,rndRow,value));
 
                     board.get(rndCol).get(rndRow).setValue(value);
+                    initialCells.add(board.get(rndCol).get(rndRow));
 
                 }
             }
@@ -63,7 +66,9 @@ public class Board extends BoardAdapter{
 
     @Override
     public boolean isValueValid(int cellCol, int cellRow, int value){
-
+        if(value == 0){
+            return true;
+        }
         //Checks for same value in the cell's row
         for(int i = 0; i < 6; i++){
             if(board.get(i).get(cellRow).getValue() == value){
@@ -108,8 +113,15 @@ public class Board extends BoardAdapter{
             }
         }
 
-        for(Cell cell : emptyCells){
-            System.out.println(cell.getCol() + " - " + cell.getRow() + " - " + cell.getValue());
+    }
+
+    public void resetBoard(){
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
+                if(!initialCells.contains(board.get(i).get(j))){
+                    board.get(i).get(j).setValue(0);
+                }
+            }
         }
     }
 
