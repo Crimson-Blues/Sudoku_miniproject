@@ -11,7 +11,7 @@ public class SudokuStage extends Stage {
         System.out.println(getClass().getResource("/org/example/miniproyecto2/sudoku-view.fxml"));
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/sudoku-view.fxml"));
-        FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/fondo.png"));
+        FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/images/fondo.png"));
         Scene scene = new Scene(fxmlLoader.load());
         setTitle("Sudoku");
         setResizable(false);

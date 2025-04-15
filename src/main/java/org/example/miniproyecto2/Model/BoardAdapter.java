@@ -11,18 +11,15 @@ public abstract class BoardAdapter implements IBoard{
     public BoardAdapter(int width, int height){
         this.width = width;
         this.height = height;
+
         board = new ArrayList<>();
         for(int i = 0; i < width; i++) {
             board.add(new ArrayList<>());
             for (int j = 0; j < height; j++) {
-                board.get(i).add(new Cell());
+                board.get(i).add(new Cell(i, j));
             }
         }
 
-    }
-    @Override
-    public boolean isCellValid(int cellCol, int celLRow) {
-        return false;
     }
 
     @Override
