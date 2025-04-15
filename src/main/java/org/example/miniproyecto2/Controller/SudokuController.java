@@ -4,9 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import org.example.miniproyecto2.Model.Board;
@@ -16,11 +14,11 @@ import org.example.miniproyecto2.Model.Hint;
 import java.util.Optional;
 
 public class SudokuController {
-
     @FXML
     private GridPane boardGridPane;
     @FXML
     private Button helpButton;
+
     @FXML
     private AnchorPane mainPane;
     private static final int GRID_SIZE = 6;
@@ -30,6 +28,8 @@ public class SudokuController {
     @FXML
     public void initialize() {
         //Creates and fills the board
+        //System.out.println(getClass().getResource("/org/example/miniproyecto2/images/fondo.png"));
+
         board = new Board(GRID_SIZE, GRID_SIZE);
 
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -71,7 +71,6 @@ public class SudokuController {
                         cell.setValue(value);
                         textField.setText(key);
                         textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent;");
-                        textField.setTooltip(null);
                     } else {
                         textField.setText(key);
                         textField.setStyle("-fx-font-size: 16; -fx-border-color: lightcoral;");
@@ -83,6 +82,8 @@ public class SudokuController {
                     textField.clear();
                     textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent; -fx-border-color: transparent;");
                     textField.setTooltip(null);
+                } else {
+                    textField.setText("");
                 }
 
             });
@@ -101,13 +102,24 @@ public class SudokuController {
                     int col = hint.get().getCol();
                     int row = hint.get().getRow();
                     int value = hint.get().getValue();
-                    System.out.println("Hint:");
-                    System.out.println(col + " " + row + " " + value);
-                    textFields[col][row].setPromptText(Integer.toString(value));
+                    //System.out.println("Hint:");
+                    //System.out.println(col + " " + row + " " + value);
+                    //textFields[col][row].setPromptText(Integer.toString(value));
                     board.getCell(col, row).setValue(value);
+                    textFields[col][row].setText(String.valueOf(value));
+                    textFields[col][row].setStyle("-fx-font-size: 16; -fx-text-fill: black;");
                     setTextFieldBorder(textFields[col][row], "d9de54");
                 }
                 else{
+                    helpButton.setDisable(true);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Ayuda");
+                    alert.setHeaderText(null);
+                    alert.setContentText("El Sudoku No tiene solución :(");
+                    alert.getDialogPane().setStyle(
+                            "-fx-font-size: 14px; -fx-font-family: 'Comic Sans MS'; -fx-background-color: #f5e6ff;"
+                    );
+                    alert.showAndWait();
                     System.out.println("Chingamos no tiene solución");
                 }
             }

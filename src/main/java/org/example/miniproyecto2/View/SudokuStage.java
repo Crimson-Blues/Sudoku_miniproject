@@ -8,10 +8,7 @@ import java.io.IOException;
 
 public class SudokuStage extends Stage {
     public SudokuStage() throws IOException {
-        System.out.println(getClass().getResource("/org/example/miniproyecto2/sudoku-view.fxml"));
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/sudoku-view.fxml"));
-        FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/images/fondo.png"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/start-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         setTitle("Sudoku");
         setResizable(false);

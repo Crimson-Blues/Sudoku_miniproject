@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="rootPane" maxHeight="400.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto2.Controller.StartController">
+   <children>
+      <Label fx:id="startLabel" layoutX="41.0" layoutY="292.0" style="-fx-cursor: Hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0.3, 2, 2);" text="&quot;Haz click para jugar&quot;" textAlignment="CENTER">
+         <font>
+            <Font name="Times New Roman Bold" size="32.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="218.0" fitWidth="522.0" layoutX="6.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/imagen2.jpg" />
+         </image>
+      </ImageView>
+      <Label contentDisplay="TOP" layoutX="104.0" layoutY="80.0" style="-fx-alignment: CENTER; -fx-effect: dropshadow(gaussian, rgba(138,43,226,0.6), 6, 0.4, 2, 2);;" text="Sudoku" textAlignment="CENTER" textFill="#86168c">
+         <font>
+            <Font name="Cooper Black" size="48.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="65.0" fitWidth="66.0" layoutX="9.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/imagen3.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="65.0" fitWidth="66.0" layoutX="321.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/imagen3.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="170.0" layoutY="135.0" style="-fx-effect: dropshadow(gaussian, rgba(138,43,226,0.6), 6, 0.4, 2, 2);" text="6 x 6" textFill="#792380">
+         <font>
+            <Font name="Cooper Black" size="26.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
