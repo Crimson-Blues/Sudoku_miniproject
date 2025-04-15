@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mainPane" maxHeight="400.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-image: url('/org/example/miniproyecto2/images/fondo.png'); -fx-background-color: transparent; -fx-background-size: cover; -fx-background-position: center center;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto2.Controller.SudokuController">
+    <children>
+        <GridPane fx:id="boardGridPane" alignment="TOP_CENTER" gridLinesVisible="true" layoutX="66.0" layoutY="83.0" prefHeight="235.0" prefWidth="268.0" style="-fx-background-color: rgba(255,255,255,0.85); -fx-border-color: violet; -fx-border-width: 2; -fx-border-radius: 12; -fx-background-radius: 12; -fx-cursor: hand; -fx-alignment: center; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="83.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <cursor>
+                <Cursor fx:constant="DEFAULT" />
+            </cursor>
+            <effect>
+                <DropShadow>
+                    <color>
+                        <Color red="0.407" green="0.037" blue="0.037" />
+                    </color>
+                </DropShadow>
+            </effect>
+         <children>
+            <Pane prefHeight="56.0" prefWidth="55.0" style="-fx-border-color: black; -fx-background-color: b39cd0; -fx-border-width: 1.5;" GridPane.columnSpan="3" GridPane.rowSpan="2" />
+            <Pane layoutX="12.0" layoutY="12.0" prefHeight="56.0" prefWidth="55.0" style="-fx-border-color: black; -fx-border-width: 1.5;" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+            <Pane layoutX="12.0" layoutY="76.0" prefHeight="56.0" prefWidth="55.0" style="-fx-border-color: black; -fx-background-color: b39cd0; -fx-border-width: 1.5;" GridPane.columnSpan="3" GridPane.rowIndex="4" GridPane.rowSpan="2" />
+            <Pane prefHeight="56.0" prefWidth="55.0" style="-fx-border-color: black; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowSpan="2" />
+            <Pane prefHeight="56.0" prefWidth="55.0" style="-fx-border-color: black; -fx-background-color: b39cd0; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.columnSpan="4" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+            <Pane prefHeight="50.0" prefWidth="107.0" style="-fx-border-color: black; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="4" GridPane.rowSpan="2" />
+         </children>
+        </GridPane>
+        <Label layoutX="130.0" layoutY="23.0" text="Sudoku" textFill="#89168d" AnchorPane.topAnchor="23.0">
+            <font>
+                <Font name="Cooper Black" size="36.0" />
+            </font>
+        </Label>
+      <Button fx:id="helpButton" alignment="CENTER" layoutX="152.0" layoutY="331.0" mnemonicParsing="false" style="-fx-background-color: #def4fe; -fx-border-color: BLACK; -fx-border-radius: 10; -fx-background-radius: 10; -fx-cursor: hand; -fx-border-width: 2.5;" text="Ayuda" textAlignment="CENTER" textFill="#89168d">
+         <font>
+            <Font name="Calibri Bold" size="23.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <ColorAdjust hue="0.35" saturation="0.03" />
+         </effect>
+      </Button>
+    </children>
+</AnchorPane>
