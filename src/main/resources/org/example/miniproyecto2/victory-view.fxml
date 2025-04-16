@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="400.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto2.Controller.VictoryController">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="400.0" pickOnBounds="true">
+      <ImageView fitHeight="400.0" fitWidth="400.0" opacity="0.5" pickOnBounds="true">
          <image>
             <Image url="@images/imagen.jpg" />
          </image>

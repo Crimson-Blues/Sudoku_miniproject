@@ -2,19 +2,20 @@ package org.example.miniproyecto2.Controller;
 
 import javafx.util.StringConverter;
 
-public class CellValueConverter extends StringConverter<Number> {
+public class CellValueConverter extends StringConverter<Integer> {
+
 
     @Override
-    public String toString(Number number) {
-        if(number == null || number.intValue() == 0){
+    public String toString(Integer integer) {
+        if(integer == null || integer == 0){
             return "";
         }
 
-        return  number.toString();
+        return  integer.toString();
     }
 
     @Override
-    public Number fromString(String s) {
+    public Integer fromString(String s) {
         if (s == null || s.isBlank()) {
             return 0;
         }

@@ -1,16 +1,19 @@
 package org.example.miniproyecto2.Controller;
 
+import javafx.animation.*;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.converter.NumberStringConverter;
 import org.example.miniproyecto2.Model.Board;
 import org.example.miniproyecto2.Model.Cell;
@@ -30,9 +33,14 @@ public class SudokuController {
     private Button restartButton;
     @FXML
     private Button newBoardButton;
+    @FXML
+    private Label errorLabel;
     private static final int GRID_SIZE = 6;
     private TextField[][] textFields = new TextField[GRID_SIZE][GRID_SIZE];
+    private CellErrorAnimator[][] errorAnimators = new CellErrorAnimator[GRID_SIZE][GRID_SIZE];
+    private CellHelpAnimator[][] helpAnimators = new CellHelpAnimator[GRID_SIZE][GRID_SIZE];
     private Board board;
+    private String textFieldBaseStyle;
 
     @FXML
     public void initialize() {
@@ -40,13 +48,16 @@ public class SudokuController {
         board = new Board(GRID_SIZE, GRID_SIZE);
         initializeTextFields();
         handleButtons();
-
+        errorLabel.setText("");
     }
 
     private void initializeTextFields() {
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 textFields[col][row] = createCell(col, row);
+                errorAnimators[col][row] = new CellErrorAnimator(textFields[col][row]);
+                helpAnimators[col][row] = new CellHelpAnimator(textFields[col][row]);
+
                 boardGridPane.add(textFields[col][row], col, row);
             }
         }
@@ -62,27 +73,30 @@ public class SudokuController {
         textField.setAlignment(Pos.CENTER);
         textField.setBackground(Background.EMPTY);
         textField.setBorder(Border.EMPTY);
+        textField.setTextFormatter(TextFilter.getFilter());
 
-        textField.setStyle("-fx-font-size: 16; -fx-font-family: 'Arial';  -fx-text-fill: black; -fx-opacity: 1.0;");
+        textField.setStyle("-fx-font-size: 20; -fx-font-family: 'Arial';  -fx-text-fill: '8967B3'; -fx-opacity: 1.0; -fx-font-weight: normal;");
+        textFieldBaseStyle = textField.getStyle();
 
         Cell cell = board.getCell(col, row);
         textField.setText(new CellValueConverter().toString(cell.getValue()));
 
         if(!cell.isEmpty()){
-            textField.setEditable(false);
+            textField.setStyle("-fx-font-size: 20; -fx-font-family: 'Arial';  -fx-text-fill: '624E88'; -fx-opacity: 1.0; -fx-font-weight: bold; -fx-border-color: 'transparent'; -fx-border-width: 1.5;");
         }
+
         textField.setOnKeyTyped(event -> {
             if (!textField.isEditable()) return;
             String key = event.getCharacter();
 
             if (key.matches("[1-6]")) {
                 int value = Integer.parseInt(key);
-                cell.setValue(value);
+
+                cell.setValue(new CellValueConverter().fromString(textField.getText()));
                 textField.setText(new CellValueConverter().toString(cell.getValue()));
 
                 if (board.isCellValid(col, row)) {
-                    textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent;");
-                    System.out.println("Is Board complete: " + board.isBoardComplete());
+                    setValidTextField(col, row);
 
                     if (board.isBoardComplete()) {
                         try {
@@ -95,31 +109,35 @@ public class SudokuController {
                         }
                     }
                 } else {
-                    textField.setStyle("-fx-font-size: 16; -fx-border-color: lightcoral;");
+                    setInvalidTextField(col, row);
                     textField.setTooltip(new Tooltip("Número inválido en fila, columna o bloque"));
+                    setErrorMessage("Casilla inválida... revisa bien");
                 }
 
-
-            } else if (textField.getText().isEmpty()) {
-                cell.clearValue();
-                textField.setText(new CellValueConverter().toString(cell.getValue()));
-                textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent; -fx-border-color: transparent;");
-                textField.setTooltip(null);
-            } else{
-                System.out.println("Input Invalido");
+            }else{
+                setErrorMessage("Cáracter inválido!");
             }
+
 
         });
 
         //Listener to update textfields border
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            int value = (int) new CellValueConverter().fromString(newValue);
-            if(board.isCellValid(col, row)){
-                textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent;");
-            }else{
-                setInvalidTextField(col, row);
+            if (newValue.matches("[1-6]")) {
+                int value = (int) new CellValueConverter().fromString(newValue);
+                if (board.isCellValid(col, row)) {
+                    setValidTextField(col, row);
+                } else {
+                    setInvalidTextField(col, row);
+                }
+            } else if (textField.getText().isEmpty()) {
+                cell.clearValue();
+                textField.setText(new CellValueConverter().toString(cell.getValue()));
+                setValidTextField(col, row);
             }
-        });
+
+            });
+
 
         return textField;
     }
@@ -130,8 +148,10 @@ public class SudokuController {
             for (int col = 0; col < GRID_SIZE; col++) {
                 cell = board.getCell(col, row);
                 textFields[col][row].setEditable(true);
+                setValidTextField(col, row);
                 textFields[col][row].setText(new CellValueConverter().toString(cell.getValue()));
                 if(!cell.isEmpty()){
+                    setInitialTextField(col, row);
                     textFields[col][row].setEditable(false);
                 }
             }
@@ -153,15 +173,15 @@ public class SudokuController {
 
                     cell.setValue(value);
                     textFields[col][row].setText(new CellValueConverter().toString(cell.getValue()));
-                    textFields[col][row].setStyle("-fx-font-size: 16; -fx-text-fill: black;");
-                    setTextFieldBorder(textFields[col][row], "d9de54");
+                    setValidTextField(col, row);
+                    helpAnimators[col][row].Blink();
                 }
                 else{
-                    //helpButton.setDisable(true);
+                    helpButton.setDisable(true);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Ayuda");
                     alert.setHeaderText(null);
-                    alert.setContentText("El Sudoku No tiene solución :(");
+                    alert.setContentText("No hay más ayudas válidas :C");
                     alert.getDialogPane().setStyle(
                             "-fx-font-size: 14px; -fx-font-family: 'Comic Sans MS'; -fx-background-color: #f5e6ff;"
                     );
@@ -202,8 +222,48 @@ public class SudokuController {
     }
 
     public void setInvalidTextField(int col, int row) {
-        textFields[col][row].setStyle("-fx-font-size: 16; -fx-border-color: lightcoral;");
+        //setTextFieldBorder(textField, "lightcoral");
+        errorAnimators[col][row].startBlinking();
+        textFields[col][row].setTooltip(new Tooltip("Número inválido en fila, columna o bloque"));
     }
+
+    public void setValidTextField(int col, int row) {
+        errorAnimators[col][row].stopBlinking();
+        //setTextFieldBorder(textField, "transparent");
+        textFields[col][row].setTooltip(null);
+        textFields[col][row].setStyle(textFieldBaseStyle);
+    }
+
+    public void setInitialTextField(int col, int row) {
+        textFields[col][row].setStyle("-fx-font-size: 20; -fx-font-family: 'Arial';  -fx-text-fill: '624E88'; -fx-opacity: 1.0; -fx-font-weight: bold; -fx-border-color: 'transparent'; -fx-border-width: 1.5;");
+        textFields[col][row].setEditable(false);
+    }
+
+    public void setErrorMessage(String message) {
+        errorLabel.setText(message);
+        fadeInOut(errorLabel);
+
+    }
+
+    public void fadeInOut(Node node) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), node);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+        fadeIn.setCycleCount(1);
+        fadeIn.play();
+
+        PauseTransition delay = new PauseTransition(Duration.millis(750));
+        delay.setOnFinished(event -> {
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), node);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.setCycleCount(1);
+            fadeOut.play();
+        });
+        delay.play();
+
+    }
+
 
 
 }

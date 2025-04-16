@@ -170,7 +170,6 @@ public class Board extends BoardAdapter{
                 }
             }
         }
-        System.out.println("Is Board Full: " + isFull());
         return isFull();
     }
 

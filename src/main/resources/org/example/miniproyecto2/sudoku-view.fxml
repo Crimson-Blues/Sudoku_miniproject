@@ -13,17 +13,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" maxHeight="420.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="420.0" prefWidth="400.0" style="-fx-background-image: url('/org/example/miniproyecto2/images/fondo.png'); -fx-background-color: transparent; -fx-background-size: cover; -fx-background-position: center center;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto2.Controller.SudokuController">
+<AnchorPane fx:id="mainPane" maxHeight="470.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="470.0" prefWidth="400.0" style="-fx-background-image: url('/org/example/miniproyecto2/images/fondo.png'); -fx-background-color: transparent; -fx-background-size: cover; -fx-background-position: center center;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto2.Controller.SudokuController">
     <children>
-      <ImageView fitHeight="425.0" fitWidth="400.0" layoutY="-3.0" pickOnBounds="true">
+      <ImageView fitHeight="476.0" fitWidth="400.0" layoutY="-3.0" opacity="0.71" pickOnBounds="true">
          <image>
             <Image url="@images/imagen.jpg" />
          </image>
       </ImageView>
-        <GridPane fx:id="boardGridPane" alignment="TOP_CENTER" gridLinesVisible="true" layoutX="66.0" layoutY="83.0" prefHeight="235.0" prefWidth="268.0" style="-fx-background-color: rgba(255,255,255,0.85); -fx-border-color: violet; -fx-border-width: 2; -fx-border-radius: 12; -fx-background-radius: 12; -fx-cursor: hand; -fx-alignment: center; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="83.0">
+        <GridPane fx:id="boardGridPane" alignment="TOP_CENTER" gridLinesVisible="true" layoutX="66.0" layoutY="83.0" prefHeight="235.0" prefWidth="268.0" style="-fx-background-color: rgba(255,255,255,0.85); -fx-border-color: violet; -fx-border-width: 2; -fx-border-radius: 12; -fx-background-radius: 12; -fx-cursor: hand; -fx-alignment: center; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="83.0">
             <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -60,11 +61,6 @@
             <Pane prefHeight="50.0" prefWidth="107.0" style="-fx-border-color: black; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="4" GridPane.rowSpan="2" />
          </children>
         </GridPane>
-        <Label layoutX="130.0" layoutY="23.0" style="-fx-background-color: #def4fe; -fx-alignment: center; -fx-background-radius: 10;" text="Sudoku" textFill="#89168d" AnchorPane.topAnchor="23.0">
-            <font>
-                <Font name="Cooper Black" size="36.0" />
-            </font>
-        </Label>
       <Button fx:id="helpButton" alignment="CENTER" layoutX="334.0" layoutY="23.0" mnemonicParsing="false" style="-fx-background-color: #def4fe; -fx-border-color: BLACK; -fx-border-radius: 50; -fx-background-radius: 50; -fx-cursor: hand; -fx-border-width: 2.5;" text="?" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman Bold" size="23.0" />
@@ -76,31 +72,45 @@
             <ColorAdjust hue="0.35" saturation="0.03" />
          </effect>
       </Button>
-      <HBox alignment="CENTER" layoutX="64.0" layoutY="356.0" prefHeight="57.0" prefWidth="267.0" spacing="50.0">
+      <ImageView fitHeight="76.0" fitWidth="223.0" layoutX="89.0" layoutY="10.0" preserveRatio="true">
+         <image>
+            <Image url="@images/small_logo.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="372.0" prefHeight="70.0" prefWidth="400.0" spacing="10.0">
          <children>
-            <Button fx:id="restartButton" alignment="CENTER" mnemonicParsing="false" prefHeight="51.0" prefWidth="51.0" style="-fx-background-color: #def4fe; -fx-border-color: BLACK; -fx-border-radius: 50; -fx-background-radius: 50; -fx-cursor: hand; -fx-border-width: 2.5;" text="↺" textAlignment="CENTER">
+            <Label fx:id="errorLabel" text="Label" textFill="#dc2e2e">
                <font>
-                  <Font name="Times New Roman Bold" size="23.0" />
+                  <Font name="Arial" size="18.0" />
                </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <effect>
-                  <ColorAdjust hue="0.35" saturation="0.03" />
-               </effect>
-            </Button>
-            <Button fx:id="newBoardButton" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #def4fe; -fx-border-color: BLACK; -fx-border-radius: 50; -fx-background-radius: 50; -fx-cursor: hand; -fx-border-width: 2.5;" text="Nuevo" textAlignment="CENTER">
-               <font>
-                  <Font name="Times New Roman Bold" size="23.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <effect>
-                  <ColorAdjust hue="0.35" saturation="0.03" />
-               </effect>
-            </Button>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="57.0" prefWidth="267.0" spacing="50.0">
+               <children>
+                  <Button fx:id="restartButton" alignment="CENTER" mnemonicParsing="false" prefHeight="51.0" prefWidth="51.0" style="-fx-background-color: #def4fe; -fx-border-color: BLACK; -fx-border-radius: 50; -fx-background-radius: 50; -fx-cursor: hand; -fx-border-width: 2.5;" text="↺" textAlignment="CENTER">
+                     <font>
+                        <Font name="Times New Roman Bold" size="23.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <effect>
+                        <ColorAdjust hue="0.35" saturation="0.03" />
+                     </effect>
+                  </Button>
+                  <Button fx:id="newBoardButton" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #def4fe; -fx-border-color: BLACK; -fx-border-radius: 50; -fx-background-radius: 50; -fx-cursor: hand; -fx-border-width: 2.5;" text="Nuevo" textAlignment="CENTER">
+                     <font>
+                        <Font name="Times New Roman Bold" size="23.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <effect>
+                        <ColorAdjust hue="0.35" saturation="0.03" />
+                     </effect>
+                  </Button>
+               </children>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
     </children>
 </AnchorPane>
