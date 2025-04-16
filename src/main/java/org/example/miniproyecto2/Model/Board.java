@@ -125,6 +125,25 @@ public class Board extends BoardAdapter{
         }
     }
 
+    public boolean isBoardComplete() {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                Cell cell = board.get(row).get(col);
+                int value = cell.getValue();
+
+                if (cell.isEmpty()) return false;
+
+                // Temporalmente borra el valor
+                cell.clearValue();
+                boolean isValid = isValueValid(row, col, value);
+                cell.setValue(value);
+
+                if (!isValid) return false;
+            }
+        }
+        return true;
+    }
+
 
 
 

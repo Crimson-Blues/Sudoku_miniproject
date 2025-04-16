@@ -4,15 +4,19 @@ import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 import org.example.miniproyecto2.Model.Board;
 import org.example.miniproyecto2.Model.Cell;
 import org.example.miniproyecto2.Model.Hint;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class SudokuController {
@@ -80,6 +84,18 @@ public class SudokuController {
 
                     if (board.isValueValid(col, row, value)) {
                         textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent;");
+                        cell.setValue(value);
+
+                        if (board.isBoardComplete()) {
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/victory-view.fxml"));
+                                Scene victoryScene = new Scene(loader.load());
+                                Stage stage = (Stage) boardGridPane.getScene().getWindow();
+                                stage.setScene(victoryScene);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     } else {
                         textField.setStyle("-fx-font-size: 16; -fx-border-color: lightcoral;");
                         textField.setTooltip(new Tooltip("Número inválido en fila, columna o bloque"));
@@ -121,7 +137,7 @@ public class SudokuController {
                     setTextFieldBorder(textFields[col][row], "d9de54");
                 }
                 else{
-                    helpButton.setDisable(true);
+                    //helpButton.setDisable(true);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Ayuda");
                     alert.setHeaderText(null);
