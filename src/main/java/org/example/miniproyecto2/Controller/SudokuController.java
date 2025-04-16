@@ -56,6 +56,7 @@ public class SudokuController {
     private TextField createCell(int col, int row) {
         TextField textField = new TextField();
 
+
         textField.setPrefWidth(50);
         textField.setPrefHeight(50);
         textField.setAlignment(Pos.CENTER);
@@ -65,14 +66,8 @@ public class SudokuController {
         textField.setStyle("-fx-font-size: 16; -fx-font-family: 'Arial';  -fx-text-fill: black; -fx-opacity: 1.0;");
 
         Cell cell = board.getCell(col, row);
+        textField.setText(new CellValueConverter().toString(cell.getValue()));
 
-        //Binds the textfield text to the cells value unidirectionally
-        textField.textProperty().bind(
-                Bindings.createStringBinding(
-                        () -> new CellValueConverter().toString(cell.valueProperty().get()),
-                        cell.valueProperty()
-                )
-        );
         if(!cell.isEmpty()){
             textField.setEditable(false);
         }
@@ -80,9 +75,10 @@ public class SudokuController {
             if (!textField.isEditable()) return;
             String key = event.getCharacter();
 
-            if (key.matches("[0-6]")) {
+            if (key.matches("[1-6]")) {
                 int value = Integer.parseInt(key);
                 cell.setValue(value);
+                textField.setText(new CellValueConverter().toString(cell.getValue()));
 
                 if (board.isCellValid(col, row)) {
                     textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent;");
@@ -106,14 +102,23 @@ public class SudokuController {
 
             } else if (textField.getText().isEmpty()) {
                 cell.clearValue();
+                textField.setText(new CellValueConverter().toString(cell.getValue()));
                 textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent; -fx-border-color: transparent;");
                 textField.setTooltip(null);
-            } else if(event.getCode() == KeyCode.BACK_SPACE){
-                cell.clearValue();
             } else{
                 System.out.println("Input Invalido");
             }
 
+        });
+
+        //Listener to update textfields border
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            int value = (int) new CellValueConverter().fromString(newValue);
+            if(board.isCellValid(col, row)){
+                textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent;");
+            }else{
+                setInvalidTextField(col, row);
+            }
         });
 
         return textField;
@@ -125,6 +130,7 @@ public class SudokuController {
             for (int col = 0; col < GRID_SIZE; col++) {
                 cell = board.getCell(col, row);
                 textFields[col][row].setEditable(true);
+                textFields[col][row].setText(new CellValueConverter().toString(cell.getValue()));
                 if(!cell.isEmpty()){
                     textFields[col][row].setEditable(false);
                 }
@@ -143,7 +149,10 @@ public class SudokuController {
                     int row = hint.get().getRow();
                     int value = hint.get().getValue();
 
-                    board.getCell(col, row).setValue(value);
+                    Cell cell = board.getCell(col, row);
+
+                    cell.setValue(value);
+                    textFields[col][row].setText(new CellValueConverter().toString(cell.getValue()));
                     textFields[col][row].setStyle("-fx-font-size: 16; -fx-text-fill: black;");
                     setTextFieldBorder(textFields[col][row], "d9de54");
                 }
@@ -166,6 +175,7 @@ public class SudokuController {
             @Override
             public void handle(ActionEvent event) {
                 board.resetBoard();
+                updateTextFields();
             }
 
             });
@@ -173,9 +183,9 @@ public class SudokuController {
         newBoardButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                //board.clear();
-                //board.fillBoard();
-                board.testBoard();
+                board.clear();
+                board.fillBoard();
+                //board.testBoard();
                 updateTextFields();
             }
 
@@ -189,6 +199,10 @@ public class SudokuController {
         //Remove previous border styles
         String cleanedStyle = existingStyle.replaceAll("-fx-border-color: [^;]+;", "");
         tf.setStyle(cleanedStyle + "-fx-border-color: " + color + ";");
+    }
+
+    public void setInvalidTextField(int col, int row) {
+        textFields[col][row].setStyle("-fx-font-size: 16; -fx-border-color: lightcoral;");
     }
 
 
