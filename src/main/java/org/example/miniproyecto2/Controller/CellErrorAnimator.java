@@ -9,18 +9,40 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+/**
+ * This class is responsible for animating the error effect on a {@link TextField}.
+ * It adds a blinking drop shadow to indicate an invalid cell input.
+ * <p>The blinking effect will loop continuously until it is stopped.</p>
+ */
 public class CellErrorAnimator {
-
+    /**
+     * The {@link TextField} that will have the error effect applied.
+     */
     private final TextField textField;
+    /**
+     * The timeline that controls the blinking animation.
+     */
     private Timeline blinkTimeline;
+    /**
+     * The base style of the {@link TextField}, saved to restore the original style after the animation.
+     */
     private final String baseStyle;
-
+    /**
+     * Constructs a new {@code CellErrorAnimator} for the given {@link TextField}.
+     *
+     * @param textField the {@link TextField} to which the error effect will be applied
+     */
     public CellErrorAnimator(TextField textField) {
         this.textField = textField;
         this.baseStyle = textField.getStyle(); // Save the original style
         blinkTimeline = null;
     }
 
+    /**
+     * Starts the blinking animation to indicate an error on the associated {@link TextField}.
+     * <p>This method will apply a glowing drop shadow effect to the {@link TextField} and make it blink.</p>
+     * <p>If the animation is already running, it does nothing.</p>
+     */
     public void startBlinking() {
         if (blinkTimeline != null) return; // Already running
 
@@ -43,6 +65,10 @@ public class CellErrorAnimator {
         blinkTimeline.setAutoReverse(true);
         blinkTimeline.play();
     }
+    /**
+     * Stops the blinking animation and restores the original style of the {@link TextField}.
+     * <p>If the animation is not running, this method does nothing.</p>
+     */
     public void stopBlinking() {
         if (blinkTimeline != null) {
             blinkTimeline.stop();

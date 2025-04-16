@@ -2,12 +2,35 @@ package org.example.miniproyecto2.Model;
 
 import java.util.*;
 
+/**
+ * Represents the complete Sudoku board.
+ * <p>This class extends {@link BoardAdapter} and includes logic for setting up the board,
+ * validating cells and values, filling the board with random numbers, checking board completion, and providing hints.</p>
+ */
 public class Board extends BoardAdapter{
+    /**
+     * A 2D list of blocks on the board, used for validating block-level constraints.
+     */
     List<List<Block>>  blocks;
+    /**
+     * A list of empty cells on the board.
+     * These are the cells that are yet to be filled.
+     */
     List<Cell> emptyCells;
+    /**
+     * A list of initial cells that have fixed values on the board.
+     * These cells cannot be modified.
+     */
     List<Cell> initialCells;
 
 
+    /**
+     * Constructs a new Board with the specified width and height.
+     * <p>The board is initialized with a set of blocks, cells, and initial values.</p>
+     *
+     * @param width the number of columns in the board
+     * @param height the number of rows in the board
+     */
     public Board(int width, int height){
         super(width, height);
         //Array for the remaining empty cells
@@ -37,6 +60,11 @@ public class Board extends BoardAdapter{
         updateEmptyCells();
     }
 
+    /**
+     * Fills the board with random valid values for some of the cells.
+     * <p>2 random values per block are placed into the cells in a way that respects Sudoku rules.
+     * The initial cells are recorded and cannot be modified.</p>
+     */
     public void fillBoard(){
         //Resets initial cell lists
         initialCells.clear();
@@ -66,6 +94,15 @@ public class Board extends BoardAdapter{
     }
 
 
+    /**
+     * Validates whether a given value can be placed in the specified cell.
+     * <p>This method checks the row, column, and block to ensure no conflicts with existing values.</p>
+     *
+     * @param cellCol the column index of the cell (0-based)
+     * @param cellRow the row index of the cell (0-based)
+     * @param value the value to validate
+     * @return true if the value can be placed, false if it conflicts with existing values
+     */
     @Override
     public boolean isValueValid(int cellCol, int cellRow, int value){
         if(value == 0){
@@ -91,6 +128,14 @@ public class Board extends BoardAdapter{
         return blocks.get(blockCol).get(blockRow).isValueValid(cellCol%3,cellRow%2, value);
     }
 
+    /**
+     * Validates whether the specified cell is valid in terms of its current value.
+     * <p>This method checks the row, column, and block to ensure no conflicts with other cells.</p>
+     *
+     * @param cellCol the column index of the cell (0-based)
+     * @param cellRow the row index of the cell (0-based)
+     * @return true if the cell is valid, false otherwise
+     */
     @Override
     public boolean isCellValid(int cellCol, int cellRow){
         int value = getCell(cellCol, cellRow).getValue();
@@ -125,6 +170,12 @@ public class Board extends BoardAdapter{
 
 
 
+    /**
+     * Provides a hint for a random empty cell with a valid value.
+     *
+     * @return an {@link Optional} containing a {@link Hint} if a valid value is found for an empty cell,
+     *         or {@link Optional#empty()} if no valid values are found
+     */
     public Optional<Hint> getHint(){
         updateEmptyCells();
         Collections.shuffle(emptyCells, new Random());
@@ -139,6 +190,10 @@ public class Board extends BoardAdapter{
         return Optional.empty();
     }
 
+    /**
+     * Updates the list of empty cells on the board.
+     * This method will clear the current list and add all cells that are empty.
+     */
     public void updateEmptyCells(){
         emptyCells.clear();
         for(int i = 0; i < width; i++){
@@ -151,6 +206,10 @@ public class Board extends BoardAdapter{
 
     }
 
+    /**
+     * Resets the board to its initial state, clearing all non-fixed cells.
+     * The cells that were initially filled cannot be modified.
+     */
     public void resetBoard(){
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
@@ -161,6 +220,11 @@ public class Board extends BoardAdapter{
         }
     }
 
+    /**
+     * Checks if the board is complete and all cells are valid.
+     *
+     * @return true if the board is complete and valid, false otherwise
+     */
     public boolean isBoardComplete() {
         for (int col = 0; col < width; col++) {
             for (int row = 0; row < height; row++) {
@@ -173,6 +237,9 @@ public class Board extends BoardAdapter{
         return isFull();
     }
 
+    /**
+     * Tests the board by filling it with a predefined solved Sudoku grid.
+     */
     public void testBoard(){
         int[][] solvedValues = {
                 {5, 2, 4, 6, 1, 3},
@@ -191,10 +258,6 @@ public class Board extends BoardAdapter{
             }
         }
     }
-
-
-
-
 
 
 }

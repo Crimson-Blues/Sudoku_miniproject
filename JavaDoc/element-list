@@ -1,0 +1,5 @@
+module:org.example.miniproyecto2
+org.example.miniproyecto2
+org.example.miniproyecto2.Controller
+org.example.miniproyecto2.Model
+org.example.miniproyecto2.View

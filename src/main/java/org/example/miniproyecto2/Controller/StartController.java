@@ -11,13 +11,26 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Controller for the start screen of the Sudoku game.
+ * Handles the animation and interaction logic for the initial view.
+ */
 public class StartController {
+    /**
+     * The root {@link javafx.scene.layout.AnchorPane} of the start view.
+     */
     @FXML
     private AnchorPane rootPane;
-
+    /**
+     * The {@link javafx.scene.control.Label} that acts as a "Start Game" button.
+     */
     @FXML
     private Label startLabel;
 
+    /**
+     * Initializes the controller after the FXML is loaded.
+     * Adds animations, hover effects, and a click handler to the start label.
+     */
     @FXML
     public void initialize() {
         FadeTransition ft = new FadeTransition(Duration.seconds(1.2), startLabel);
@@ -44,6 +57,12 @@ public class StartController {
         startLabel.setOnMouseClicked(this::handleStartClick);
     }
 
+    /**
+     * Handles the click event on the start label.
+     * Loads the Sudoku game view and switches the scene.
+     *
+     * @param event The mouse click event.
+     */
     private void handleStartClick(MouseEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/sudoku-view.fxml"));

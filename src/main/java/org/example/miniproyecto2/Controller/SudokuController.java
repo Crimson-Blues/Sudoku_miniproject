@@ -22,26 +22,69 @@ import org.example.miniproyecto2.Model.Hint;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Controller class for the main Sudoku game view.
+ * Handles user interaction, validation, and UI updates for the Sudoku board.
+ */
 public class SudokuController {
+    /**
+     * The {@link javafx.scene.layout.GridPane} that visually represents the Sudoku board.
+     */
     @FXML
     private GridPane boardGridPane;
+    /**
+     * The {@link javafx.scene.control.Button} that provides the player with a hint.
+     */
     @FXML
     private Button helpButton;
+    /**
+     * The main container pane for the scene, an {@link javafx.scene.layout.AnchorPane}.
+     */
     @FXML
     private AnchorPane mainPane;
+    /**
+     * The {@link javafx.scene.control.Button} that restarts the current game board.
+     */
     @FXML
     private Button restartButton;
+    /**
+     * The {@link javafx.scene.control.Button} that generates a new Sudoku board.
+     */
     @FXML
     private Button newBoardButton;
+    /**
+     * A {@link javafx.scene.control.Label} used to display error messages to the player.
+     */
     @FXML
     private Label errorLabel;
+    /**
+     * The size of the Sudoku grid (6x6 in this implementation).
+     */
     private static final int GRID_SIZE = 6;
+    /**
+     * 2D array of TextFields representing the visual cells on the Sudoku board.
+     */
     private TextField[][] textFields = new TextField[GRID_SIZE][GRID_SIZE];
+    /**
+     * 2D array of CellErrorAnimator used to animate invalid cell entries.
+     */
     private CellErrorAnimator[][] errorAnimators = new CellErrorAnimator[GRID_SIZE][GRID_SIZE];
+    /**
+     * 2D array of CellHelpAnimator used to highlight hints provided to the user.
+     */
     private CellHelpAnimator[][] helpAnimators = new CellHelpAnimator[GRID_SIZE][GRID_SIZE];
+    /**
+     * Logical representation of the Sudoku board, containing cell data and validation logic.
+     */
     private Board board;
+    /**
+     * Stores the default style string applied to editable TextFields.
+     */
     private String textFieldBaseStyle;
 
+    /**
+     * Initializes the controller and sets up the game board and button actions.
+     */
     @FXML
     public void initialize() {
         //Creates and fills the board
@@ -51,6 +94,9 @@ public class SudokuController {
         errorLabel.setText("");
     }
 
+    /**
+     * Fills the grid with {@link javafx.scene.control.TextField}s, sets up animators and styles.
+     */
     private void initializeTextFields() {
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
@@ -64,6 +110,13 @@ public class SudokuController {
     }
 
 
+    /**
+     * Creates a styled {@link javafx.scene.control.TextField} and attaches event listeners.
+     *
+     * @param col the column index of the cell
+     * @param row the row index of the cell
+     * @return a configured TextField
+     */
     private TextField createCell(int col, int row) {
         TextField textField = new TextField();
 
@@ -142,6 +195,9 @@ public class SudokuController {
         return textField;
     }
 
+    /**
+     * Updates all the text fields from the board state.
+     */
     private void updateTextFields() {
         Cell cell;
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -158,6 +214,9 @@ public class SudokuController {
         }
     }
 
+    /**
+     * Binds actions to the help, restart and new board buttons.
+     */
     public void handleButtons(){
         helpButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -177,7 +236,7 @@ public class SudokuController {
                     helpAnimators[col][row].Blink();
                 }
                 else{
-                    helpButton.setDisable(true);
+                    //helpButton.setDisable(true);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Ayuda");
                     alert.setHeaderText(null);
@@ -213,7 +272,12 @@ public class SudokuController {
 
 
     }
-
+    /**
+     * Sets a custom border color on the given {@link javafx.scene.control.TextField}.
+     *
+     * @param tf    the TextField to style
+     * @param color the color name or code
+     */
     public void setTextFieldBorder(TextField tf, String color) {
         String existingStyle = tf.getStyle();
         //Remove previous border styles
@@ -221,12 +285,24 @@ public class SudokuController {
         tf.setStyle(cleanedStyle + "-fx-border-color: " + color + ";");
     }
 
+    /**
+     * Marks a cell as invalid and displays a red glow animation.
+     *
+     * @param col the column index
+     * @param row the row index
+     */
     public void setInvalidTextField(int col, int row) {
         //setTextFieldBorder(textField, "lightcoral");
         errorAnimators[col][row].startBlinking();
         textFields[col][row].setTooltip(new Tooltip("Número inválido en fila, columna o bloque"));
     }
 
+    /**
+     * Clears invalid state and resets the text field style.
+     *
+     * @param col the column index
+     * @param row the row index
+     */
     public void setValidTextField(int col, int row) {
         errorAnimators[col][row].stopBlinking();
         //setTextFieldBorder(textField, "transparent");
@@ -234,17 +310,32 @@ public class SudokuController {
         textFields[col][row].setStyle(textFieldBaseStyle);
     }
 
+    /**
+     * Applies the initial bold style to a cell that was generated by the board.
+     *
+     * @param col the column index
+     * @param row the row index
+     */
     public void setInitialTextField(int col, int row) {
         textFields[col][row].setStyle("-fx-font-size: 20; -fx-font-family: 'Arial';  -fx-text-fill: '624E88'; -fx-opacity: 1.0; -fx-font-weight: bold; -fx-border-color: 'transparent'; -fx-border-width: 1.5;");
         textFields[col][row].setEditable(false);
     }
 
+    /**
+     * Displays an error message in the error label with fade-in and fade-out animation.
+     *
+     * @param message the message to display
+     */
     public void setErrorMessage(String message) {
         errorLabel.setText(message);
         fadeInOut(errorLabel);
 
     }
-
+    /**
+     * Animates a {@link javafx.scene.Node} with fade-in and fade-out.
+     *
+     * @param node the node to animate
+     */
     public void fadeInOut(Node node) {
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), node);
         fadeIn.setFromValue(0.0);
