@@ -17,4 +17,21 @@ public class Block extends BoardAdapter{
         }
         return true;
     }
+
+    @Override
+    public boolean isCellValid(int cellCol, int cellRow){
+        int value = getCell(cellCol, cellRow).getValue();
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
+                if(i == cellCol && j == cellRow){
+                    continue;
+                }
+                if(board.get(i).get(j).getValue() == value){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

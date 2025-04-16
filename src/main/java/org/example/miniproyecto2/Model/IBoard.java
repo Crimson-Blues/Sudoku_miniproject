@@ -5,4 +5,6 @@ public interface IBoard {
     Cell getCell(int cellCol, int cellRow);
     boolean isFull();
     boolean isValueValid(int cellCol, int cellRow, int value);
+    boolean isCellValid(int cellCol, int cellRow);
+    void clear();
 }

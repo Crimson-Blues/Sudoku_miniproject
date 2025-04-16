@@ -38,8 +38,10 @@ public class Board extends BoardAdapter{
     }
 
     public void fillBoard(){
+        //Resets initial cell lists
+        initialCells.clear();
+
         int rndRow, rndCol, value;
-        boolean isValid;
         Random rand = new Random();
         for (int nums = 0; nums < 2; nums++) {
 
@@ -86,8 +88,42 @@ public class Board extends BoardAdapter{
         int blockRow = cellRow/2;
 
 
-        return blocks.get(blockCol).get(blockRow).isValueValid(cellCol,cellRow, value);
+        return blocks.get(blockCol).get(blockRow).isValueValid(cellCol%3,cellRow%2, value);
     }
+
+    @Override
+    public boolean isCellValid(int cellCol, int cellRow){
+        int value = getCell(cellCol, cellRow).getValue();
+
+        if(value == 0){
+            return true;
+        }
+        //Checks for same value in the cell's row
+        for(int i = 0; i < width; i++){
+            if(i == cellCol){
+                continue;
+            }
+            if(board.get(i).get(cellRow).getValue() == value){
+                return false;
+            }
+        }
+
+        //Checks for same value in cell's column
+        for(int i = 0; i < height; i++){
+            if(i == cellRow){
+                continue;
+            }
+            if(board.get(cellCol).get(i).getValue() == value){
+                return false;
+            }
+        }
+        int blockCol = cellCol/3;
+        int blockRow = cellRow/2;
+
+        return blocks.get(blockCol).get(blockRow).isCellValid(cellCol%3,cellRow%2);
+    }
+
+
 
     public Optional<Hint> getHint(){
         updateEmptyCells();
@@ -126,22 +162,35 @@ public class Board extends BoardAdapter{
     }
 
     public boolean isBoardComplete() {
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                Cell cell = board.get(row).get(col);
-                int value = cell.getValue();
-
-                if (cell.isEmpty()) return false;
-
-                // Temporalmente borra el valor
-                cell.clearValue();
-                boolean isValid = isValueValid(row, col, value);
-                cell.setValue(value);
-
-                if (!isValid) return false;
+        for (int col = 0; col < width; col++) {
+            for (int row = 0; row < height; row++) {
+                if(!isCellValid(col, row)){
+                    System.out.println("Cell [" + col + "][" + row + "] is invalid");
+                    return false;
+                }
             }
         }
-        return true;
+        System.out.println("Is Board Full: " + isFull());
+        return isFull();
+    }
+
+    public void testBoard(){
+        int[][] solvedValues = {
+                {5, 2, 4, 6, 1, 3},
+                {1, 3, 6, 4, 5, 2},
+                {2, 6, 1, 5, 3, 4},
+                {3, 4, 5, 2, 6, 1},
+                {6, 1, 2, 3, 4, 5},
+                {4, 5, 3, 1, 2, 0}
+        };
+
+        clear();
+
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
+                getCell(i,j).setValue(solvedValues[j][i]);
+            }
+        }
     }
 
 

@@ -28,6 +28,11 @@ public abstract class BoardAdapter implements IBoard{
     }
 
     @Override
+    public boolean isCellValid(int cellCol, int cellRow) {
+        return false;
+    }
+
+    @Override
     public void setCell(int cellCol, int cellRow, Cell cell) {
         board.get(cellCol).set(cellRow, cell);
     }
@@ -46,6 +51,15 @@ public abstract class BoardAdapter implements IBoard{
             }
         }
         return true;
+    }
+
+    @Override
+    public void clear(){
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
+                getCell(i,j).clearValue();
+            }
+        }
     }
 
 }

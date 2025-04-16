@@ -37,21 +37,21 @@ public class SudokuController {
     @FXML
     public void initialize() {
         //Creates and fills the board
-        //System.out.println(getClass().getResource("/org/example/miniproyecto2/images/fondo.png"));
-
         board = new Board(GRID_SIZE, GRID_SIZE);
-
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                TextField cellField = createCell(col, row);
-                textFields[col][row] = cellField;
-                boardGridPane.add(cellField, col, row);
-            }
-        }
-
+        initializeTextFields();
         handleButtons();
 
     }
+
+    private void initializeTextFields() {
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                textFields[col][row] = createCell(col, row);
+                boardGridPane.add(textFields[col][row], col, row);
+            }
+        }
+    }
+
 
     private TextField createCell(int col, int row) {
         TextField textField = new TextField();
@@ -66,56 +66,70 @@ public class SudokuController {
 
         Cell cell = board.getCell(col, row);
 
+        //Binds the textfield text to the cells value unidirectionally
         textField.textProperty().bind(
                 Bindings.createStringBinding(
                         () -> new CellValueConverter().toString(cell.valueProperty().get()),
                         cell.valueProperty()
                 )
         );
-
-        if (!cell.isEmpty()) {
+        if(!cell.isEmpty()){
             textField.setEditable(false);
-        } else {
-            textField.setOnKeyTyped(event -> {
-                String key = event.getCharacter();
+        }
+        textField.setOnKeyTyped(event -> {
+            if (!textField.isEditable()) return;
+            String key = event.getCharacter();
 
-                if (key.matches("[0-6]")) {
-                    int value = Integer.parseInt(key);
+            if (key.matches("[0-6]")) {
+                int value = Integer.parseInt(key);
+                cell.setValue(value);
 
-                    if (board.isValueValid(col, row, value)) {
-                        textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent;");
-                        cell.setValue(value);
+                if (board.isCellValid(col, row)) {
+                    textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent;");
+                    System.out.println("Is Board complete: " + board.isBoardComplete());
 
-                        if (board.isBoardComplete()) {
-                            try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/victory-view.fxml"));
-                                Scene victoryScene = new Scene(loader.load());
-                                Stage stage = (Stage) boardGridPane.getScene().getWindow();
-                                stage.setScene(victoryScene);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    if (board.isBoardComplete()) {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto2/victory-view.fxml"));
+                            Scene victoryScene = new Scene(loader.load());
+                            Stage stage = (Stage) boardGridPane.getScene().getWindow();
+                            stage.setScene(victoryScene);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } else {
-                        textField.setStyle("-fx-font-size: 16; -fx-border-color: lightcoral;");
-                        textField.setTooltip(new Tooltip("Número inválido en fila, columna o bloque"));
                     }
-                    cell.setValue(value);
-
-                } else if (textField.getText().isEmpty()) {
-                    cell.clearValue();
-                    textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent; -fx-border-color: transparent;");
-                    textField.setTooltip(null);
-                } else if(event.getCode() == KeyCode.BACK_SPACE){
-                    cell.clearValue();
-                } else{
-                    System.out.println("Input Invalido");
+                } else {
+                    textField.setStyle("-fx-font-size: 16; -fx-border-color: lightcoral;");
+                    textField.setTooltip(new Tooltip("Número inválido en fila, columna o bloque"));
                 }
 
-            });
-        }
+
+            } else if (textField.getText().isEmpty()) {
+                cell.clearValue();
+                textField.setStyle("-fx-font-size: 16; -fx-background-color: transparent; -fx-border-color: transparent;");
+                textField.setTooltip(null);
+            } else if(event.getCode() == KeyCode.BACK_SPACE){
+                cell.clearValue();
+            } else{
+                System.out.println("Input Invalido");
+            }
+
+        });
 
         return textField;
+    }
+
+    private void updateTextFields() {
+        Cell cell;
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                cell = board.getCell(col, row);
+                textFields[col][row].setEditable(true);
+                if(!cell.isEmpty()){
+                    textFields[col][row].setEditable(false);
+                }
+            }
+        }
     }
 
     public void handleButtons(){
@@ -128,11 +142,8 @@ public class SudokuController {
                     int col = hint.get().getCol();
                     int row = hint.get().getRow();
                     int value = hint.get().getValue();
-                    //System.out.println("Hint:");
-                    //System.out.println(col + " " + row + " " + value);
-                    //textFields[col][row].setPromptText(Integer.toString(value));
+
                     board.getCell(col, row).setValue(value);
-                    //textFields[col][row].setText(String.valueOf(value));
                     textFields[col][row].setStyle("-fx-font-size: 16; -fx-text-fill: black;");
                     setTextFieldBorder(textFields[col][row], "d9de54");
                 }
@@ -158,6 +169,19 @@ public class SudokuController {
             }
 
             });
+
+        newBoardButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                //board.clear();
+                //board.fillBoard();
+                board.testBoard();
+                updateTextFields();
+            }
+
+        });
+
+
     }
 
     public void setTextFieldBorder(TextField tf, String color) {
